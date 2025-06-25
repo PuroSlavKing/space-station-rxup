@@ -38,8 +38,8 @@
     - map: [ "eyes" ]
     - map: [ "belt" ]
     - map: [ "id" ]
-    - map: [ "back" ]
     - map: [ "neck" ]
+    - map: [ "back" ]
     - map: [ "enum.HumanoidVisualLayers.FacialHair" ]
     - map: [ "enum.HumanoidVisualLayers.Hair" ]
     - map: [ "enum.HumanoidVisualLayers.HeadSide" ]
@@ -98,6 +98,12 @@
         - MobMask
         layer:
         - MobLayer
+  - type: MobState
+    allowedStates:
+    - Alive
+    - SoftCritical
+    - Critical
+    - Dead
   - type: FloorOcclusion
   - type: Mood
   - type: RangedDamageSound
@@ -351,12 +357,12 @@
     - map: [ "gloves" ]
     - map: [ "shoes" ]
     - map: [ "ears" ]
+    - map: [ "outerClothing" ]
     - map: [ "eyes" ]
     - map: [ "belt" ]
     - map: [ "id" ]
-    - map: [ "outerClothing" ]
-    - map: [ "back" ]
     - map: [ "neck" ]
+    - map: [ "back" ]
     - map: [ "enum.HumanoidVisualLayers.FacialHair" ]
     - map: [ "enum.HumanoidVisualLayers.Hair" ]
     - map: [ "enum.HumanoidVisualLayers.HeadSide" ]

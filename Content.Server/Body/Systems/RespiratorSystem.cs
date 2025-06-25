@@ -193,6 +193,20 @@ public sealed class RespiratorSystem : EntitySystem
     }
 
     /// <summary>
+    /// Returns true if the entity is above their SuffocationThreshold and alive.
+    /// </summary>
+    public bool IsBreathing(Entity<RespiratorComponent?> ent)
+    {
+        if (_mobState.IsIncapacitated(ent))
+            return false;
+
+        if (!Resolve(ent, ref ent.Comp))
+            return false;
+
+        return (ent.Comp.Saturation > ent.Comp.SuffocationThreshold);
+    }
+
+    /// <summary>
     /// Check whether or not an entity can metabolize inhaled air without suffocating or taking damage (i.e., no toxic
     /// gasses).
     /// </summary>
@@ -314,32 +328,6 @@ public sealed class RespiratorSystem : EntitySystem
             RaiseLocalEvent(ent, new MoodEffectEvent("Suffocating")); // backmen: mood
         }
 
-        // backmen edit start
-        if (_consciousness.TryGetNerveSystem(ent, out var nerveSys))
-        {
-            if (!_consciousness.TryGetConsciousnessModifier(ent, nerveSys.Value, out var modifier, "Suffocation"))
-            {
-                _consciousness.AddConsciousnessModifier(
-                    ent,
-                    nerveSys.Value,
-                    -ent.Comp.Damage.GetTotal(),
-                    identifier: "Suffocation",
-                    type: ConsciousnessModType.Pain);
-            }
-            else
-            {
-                _consciousness.SetConsciousnessModifier(
-                    ent,
-                    nerveSys.Value,
-                    modifier.Value.Change - ent.Comp.Damage.GetTotal(),
-                    identifier: "Suffocation",
-                    type: ConsciousnessModType.Pain);
-            }
-
-            return;
-        }
-        // backmen edit end
-
         _damageableSys.TryChangeDamage(ent, ent.Comp.Damage, interruptsDoAfters: false);
     }
 
@@ -353,17 +341,6 @@ public sealed class RespiratorSystem : EntitySystem
         foreach (var entity in organs)
         {
             _alertsSystem.ClearAlert(ent, entity.Comp1.Alert);
-        }
-
-        if (_consciousness.TryGetNerveSystem(ent, out var nerveSys))
-        {
-            _consciousness.ChangeConsciousnessModifier(
-                ent,
-                nerveSys.Value,
-                FixedPoint2.Abs(ent.Comp.DamageRecovery.GetTotal()),
-                "Suffocation");
-
-            return;
         }
 
         _damageableSys.TryChangeDamage(ent, ent.Comp.DamageRecovery);
