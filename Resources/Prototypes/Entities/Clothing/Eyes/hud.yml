@@ -37,12 +37,11 @@
   name: medical hud
   description: A heads-up display that scans the humanoids in view and provides accurate data about their health status.
   components:
-  - type: ClothingGrant
-    component:
-    - type: ShowHealthBars
-      damageContainers:
+  - type: ShowHealthBars
+    damageContainers:
         - Biological
         - HalfSpirit
+        - RaceDemon
   - type: Sprite
     sprite: Clothing/Eyes/Hud/med.rsi
   - type: Clothing
@@ -50,6 +49,8 @@
   - type: Tag
     tags:
     - HudMedical
+    - CorgiWearable
+    - WhitelistChameleon
 
 - type: entity
   parent: [ClothingEyesBase, ShowSecurityIcons, BaseSecurityContraband]
@@ -64,6 +65,8 @@
   - type: Tag
     tags:
     - HudSecurity
+    - CorgiWearable
+    - WhitelistChameleon
 
 - type: entity
   parent: [ClothingEyesBase, BaseCommandContraband]
@@ -76,6 +79,10 @@
   - type: Clothing
     sprite: Clothing/Eyes/Hud/command.rsi
   - type: ShowJobIcons
+  - type: Tag
+    tags:
+    - CorgiWearable
+    - WhitelistChameleon
 
 - type: entity
   parent: ClothingEyesBase
@@ -91,6 +98,10 @@
   - type: StealTarget
     stealGroup: ClothingEyesHudBeer
   - type: SolutionScanner
+  - type: Tag
+    tags:
+    - CorgiWearable
+    - WhitelistChameleon
 
 - type: entity
   parent: ClothingEyesBase
@@ -169,7 +180,7 @@
     node: medsecHud
 
 - type: entity
-  parent: [ClothingEyesBase, ShowSecurityIcons, ShowMedicalIcons]
+  parent: [ClothingEyesBase, ShowSecurityIcons]
   id: ClothingEyesHudMultiversal
   name: multiversal hud
   description: Filler
@@ -182,6 +193,8 @@
     damageContainers:
     - Biological
     - Inorganic
+    - RaceDemon
+    - HalfSpirit
   - type: ShowSyndicateIcons
 
 - type: entity
@@ -198,6 +211,8 @@
     damageContainers:
     - Biological
     - Inorganic
+    - HalfSpirit
+    - RaceDemon
   - type: ShowHungerIcons
   - type: ShowThirstIcons
   - type: ShowSyndicateIcons
@@ -207,6 +222,7 @@
       damageContainers:
         - Biological
         - HalfSpirit
+        - RaceDemon
 
 - type: entity
   parent: [ClothingEyesBase, ShowSecurityIcons, BaseSyndicateContraband]
@@ -219,6 +235,10 @@
   - type: Clothing
     sprite: Clothing/Eyes/Hud/synd.rsi
   - type: ShowSyndicateIcons
+  - type: Tag
+    tags:
+    - CorgiWearable
+    - WhitelistChameleon
 
 - type: entity
   parent: [ClothingEyesBase, ShowSecurityIcons, BaseSyndicateContraband]
@@ -232,6 +252,10 @@
     sprite: Clothing/Eyes/Hud/syndagent.rsi
   - type: ShowSyndicateIcons
   - type: ShowHealthBars
+  - type: Tag
+    tags:
+    - CorgiWearable
+    - WhitelistChameleon
 
 - type: entity
   parent: [ClothingEyesGlassesSunglasses, ShowSecurityIcons]
@@ -248,6 +272,11 @@
     sprite: Clothing/Eyes/Hud/medpatch.rsi
   - type: Clothing
     sprite: Clothing/Eyes/Hud/medpatch.rsi
+  - type: Tag
+    tags:
+    - CorgiWearable
+    - WhitelistChameleon
+    - HudMedical
 
 - type: entity
   parent: [ClothingEyesEyepatchHudMedical, ClothingHeadEyeBaseFlipped]
@@ -264,6 +293,11 @@
     sprite: Clothing/Eyes/Hud/secpatch.rsi
   - type: Clothing
     sprite: Clothing/Eyes/Hud/secpatch.rsi
+  - type: Tag
+    tags:
+    - CorgiWearable
+    - WhitelistChameleon
+    - HudSecurity
 
 - type: entity
   parent: [ClothingEyesEyepatchHudSecurity,  ClothingHeadEyeBaseFlipped]

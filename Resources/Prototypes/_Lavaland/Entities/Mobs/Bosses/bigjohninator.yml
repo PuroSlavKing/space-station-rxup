@@ -226,10 +226,11 @@
 
 - type: entity
   id: ActionSpawnMine
+  parent: BaseAction
   name: "[color=red]Спавн мин[/color]"
   description: Используй свою всевышнию силу и уничтожь врагов!
   components:
-  - type: EntityWorldTargetAction
+  - type: Action
     raiseOnUser: true
     icon:
       sprite: Mobs/Aliens/Asteroid/goliath.rsi
@@ -237,54 +238,21 @@
     iconOn:
       sprite: Mobs/Aliens/Asteroid/goliath.rsi
       state: goliath_tentacle_wiggle
+    useDelay: 5
+  - type: WorldTargetAction
     event: !type:GoliathSummonTentacleAction
       entityId: MissileDropMarkerBigJohn
       extraSpawns: 0
-    useDelay: 5
+  - type: TargetAction
     range: 30
 
 - type: entity
   id: MissileDropMarkerBigJohn
-  parent: DropPodMarker
   categories: [ HideSpawnMenu ]
+  save: false
   components:
-  - type: TimedSpawner
-    prototypes:
-      -  MissileDropLaunchAnimationBigJohn
-    intervalSeconds: 1
-  - type: TimedDespawn
-    lifetime: 1.1
-
-- type: entity
-  id: MissileDropLaunchAnimationBigJohn
-  parent: MissileDropLaunchAnimation
-  categories: [ HideSpawnMenu ]
-  components:
-  - type: TimedSpawner
-    prototypes:
-      - MissileDropRandomSpawnerBigJohn
-    intervalSeconds: 2
-
-- type: entity
-  id: MissileDropRandomSpawnerBigJohn
-  parent: DropPodLaunchAnimation
-  categories: [ HideSpawnMenu ]
-  components:
-  - type: RandomSpawner
-    prototypes:
-      - MissileDropBigJohn
-    chance: 1
-
-- type: entity
-  id: MissileDropBigJohn
-  parent: MissileDrop
-  categories: [ HideSpawnMenu ]
-  components:
-  - type: SpawnOnDespawn
-    prototype: ExplosionInstantBigJohn
-  - type: ConditionalSpawner
-    prototypes:
-    - ExplosionBigJohn
+  - type: AirDrop
+    supplyDropProto: ExplosionBigJohn
 
 - type: polymorph
   id: SwoopFly

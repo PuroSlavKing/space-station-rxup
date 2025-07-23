@@ -41,6 +41,7 @@ using Content.Shared.Ghost.Roles.Components;
 using Content.Shared.Tag;
 using Robust.Shared.Player;
 using Robust.Shared.Prototypes;
+using Content.Shared.NPC.Prototypes;
 
 namespace Content.Server.Zombies;
 
@@ -69,6 +70,8 @@ public sealed partial class ZombieSystem
 
     private static readonly ProtoId<TagPrototype> InvalidForGlobalSpawnSpellTag = "InvalidForGlobalSpawnSpell";
     private static readonly ProtoId<TagPrototype> CannotSuicideTag = "CannotSuicide";
+    private static readonly ProtoId<NpcFactionPrototype> ZombieFaction = "Zombie";
+
     /// <summary>
     /// Handles an entity turning into a zombie when they die or go into crit
     /// </summary>
@@ -228,25 +231,25 @@ public sealed partial class ZombieSystem
         // Backmen Edit start
         if (_consciousness.TryGetNerveSystem(target, out var nerveSys))
         {
+            _consciousness.ForceConscious(target, TimeSpan.FromSeconds(12f));
+            _consciousness.AddConsciousnessMultiplier(target, target, 1.4f, "Zombified");
+
             _pain.TryAddPainMultiplier(
                 nerveSys.Value,
                 "Zombified",
                 -1f,
-                PainDamageTypes.WoundPain,
+                PainType.WoundPain,
                 nerveSys.Value);
             _pain.TryAddPainMultiplier(nerveSys.Value,
                 "ZombifiedTraumatic",
                 -1f,
-                PainDamageTypes.TraumaticPain,
+                PainType.TraumaticPain,
                 nerveSys.Value);
-
-            _consciousness.AddConsciousnessMultiplier(target, target, 1.4f, "Zombified");
-            _consciousness.ForceConscious(target, TimeSpan.FromSeconds(12f));
         }
         // Backmen Edit end
 
         _faction.ClearFactions(target, dirty: false);
-        _faction.AddFaction(target, "Zombie");
+        _faction.AddFaction(target, ZombieFaction);
 
         //gives it the funny "Zombie ___" name.
         _nameMod.RefreshNameModifiers(target);

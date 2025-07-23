@@ -2,6 +2,8 @@
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Net.Security;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -28,13 +30,35 @@ public sealed class GptAhelpSystem : EntitySystem
     [Dependency] private readonly IPlayerManager _playerManager = default!;
     [Dependency] private readonly IAdminManager _adminManager = default!;
     [Dependency] private readonly AdminSystem _adminSystem = default!;
-    private readonly HttpClient _httpClient = new(
-        /*
-        new SocketsHttpHandler()
+
+    private static readonly SocketsHttpHandler _socketsHttpHandler = new()
         {
-            Proxy = new WebProxy("http://localhost:8888")
-        }*/
-        )
+            SslOptions = new SslClientAuthenticationOptions
+            {
+                RemoteCertificateValidationCallback = (sender, cert, chain, sslPolicyErrors) =>
+                {
+                    // Разрешаем, если ошибок нет
+                    if (sslPolicyErrors == SslPolicyErrors.None)
+                        return true;
+
+                    // Разрешаем только если единственная ошибка - UntrustedRoot
+                    if (sslPolicyErrors == SslPolicyErrors.RemoteCertificateChainErrors && chain?.ChainStatus is {} chainStatus)
+                    {
+                        // Проверяем все статусы в цепочке
+                        foreach (var status in chainStatus)
+                        {
+                            // Если есть ошибка, отличная от UntrustedRoot - блокируем
+                            if (status.Status != X509ChainStatusFlags.UntrustedRoot)
+                                return false;
+                        }
+                        return true; // Только UntrustedRoot - пропускаем
+                    }
+                    return false; // Другие ошибки (недействительное имя, просроченный и т.д.)
+                }
+            }
+            //Proxy = new WebProxy("http://localhost:8888")
+        };
+    private readonly HttpClient _httpClient = new(_socketsHttpHandler, false)
     {
         Timeout = TimeSpan.FromMinutes(3),
 
@@ -98,7 +122,7 @@ public sealed class GptAhelpSystem : EntitySystem
         if(_gigaTocExpire > DateTimeOffset.Now)
             return;
 
-        using var client = new HttpClient();
+        using var client = new HttpClient(_socketsHttpHandler, false);
         using var request = new HttpRequestMessage(HttpMethod.Post, "https://ngw.devices.sberbank.ru:9443/api/v2/oauth");
         request.Headers.Add("Accept", "application/json");
         request.Headers.Add("RqUID", Guid.NewGuid().ToString());
@@ -285,8 +309,6 @@ public sealed class GptAhelpSystem : EntitySystem
         try
         {
             await UpdateGigaToken();
-            SetTyping(userId, true);
-
             await ProcessRequest(shell, userId, history);
 
             shell.WriteLine("ГОТОВО!");
@@ -299,17 +321,22 @@ public sealed class GptAhelpSystem : EntitySystem
 
     private async Task ProcessRequest(IConsoleShell shell, NetUserId userId, GptUserInfo history)
     {
+        SetTyping(userId, true);
         var (info, err) = await SendApiRequest(history, userId);
         if (!string.IsNullOrEmpty(err))
         {
+            SetTyping(userId, false);
             shell.WriteError(err);
             return;
         }
         if (info == null)
         {
+            SetTyping(userId, false);
             shell.WriteError($"Ошибка! GptChat: ответ = null");
             return;
         }
+
+        SetTyping(userId, true);
 
         await ProcessResponse(shell, userId, history, info);
     }

@@ -222,12 +222,6 @@ public sealed class ServerConsciousnessSystem : ConsciousnessSystem
             return false;
         }
 
-        if (mobState.CurrentState is not MobState.Critical)
-        {
-            _popup.PopupPredicted(Loc.GetString("cpr-cant-perform-not-crit"), consciousness, user, PopupType.Medium);
-            return false;
-        }
-
         return true;
     }
 
@@ -320,7 +314,7 @@ public sealed class ServerConsciousnessSystem : ConsciousnessSystem
                 Pain.PlayPainSound(
                     consciousness,
                     nerveSys.Value.Comp.OrganDestructionReflexSounds[sex],
-                    AudioParams.Default.WithVolume(6f));
+                    AudioParams.Default.WithVolume(12f));
 
                 return;
             }
@@ -354,7 +348,7 @@ public sealed class ServerConsciousnessSystem : ConsciousnessSystem
                 Pain.PlayPainSound(
                     consciousness,
                     nerveSys.Value.Comp.OrganDestructionReflexSounds[sex],
-                    AudioParams.Default.WithVolume(6f));
+                    AudioParams.Default.WithVolume(12f));
             }
             else
             {
@@ -362,7 +356,7 @@ public sealed class ServerConsciousnessSystem : ConsciousnessSystem
                 Pain.PlayPainSound(
                     consciousness,
                     nerveSys.Value.Comp.PainGrunts[sex],
-                    AudioParams.Default.WithVolume(6f));
+                    AudioParams.Default.WithVolume(12f));
             }
 
             return;
@@ -459,6 +453,7 @@ public sealed class ServerConsciousnessSystem : ConsciousnessSystem
                     nerveSys.Value,
                     -damagePiece.Value,
                     "Suffocation",
+                    ConsciousnessModType.Pain,
                     consciousness: consciousness);
             }
 
@@ -483,6 +478,9 @@ public sealed class ServerConsciousnessSystem : ConsciousnessSystem
 
     private void OnBodyPartRemoved(EntityUid uid, ConsciousnessRequiredComponent component, ref BodyPartRemovedEvent args)
     {
+        if(TerminatingOrDeleted(uid) || TerminatingOrDeleted(args.Part))
+            return;
+
         if (args.Part.Comp.Body == null || !ConsciousnessQuery.TryComp(args.Part.Comp.Body.Value, out var consciousness))
             return;
 
