@@ -13,6 +13,7 @@ using Content.Shared.Popups;
 using Content.Shared.Backmen.Psionics.Events;
 using Content.Shared.Body.Components;
 using Content.Shared.Body.Systems;
+using Content.Shared.Chemistry.Reagent;
 using Content.Shared.Examine;
 using Robust.Server.Audio;
 using static Content.Shared.Examine.ExamineSystemShared;
@@ -36,14 +37,13 @@ public sealed class PsionicRegenerationPowerSystem : EntitySystem
     {
         base.Initialize();
         SubscribeLocalEvent<PsionicRegenerationPowerComponent, ComponentInit>(OnInit);
-        SubscribeLocalEvent<PsionicRegenerationPowerComponent, ComponentShutdown>(OnShutdown);
         SubscribeLocalEvent<PsionicRegenerationPowerComponent, PsionicRegenerationPowerActionEvent>(OnPowerUsed);
 
         SubscribeLocalEvent<PsionicRegenerationPowerComponent, DispelledEvent>(OnDispelled);
         SubscribeLocalEvent<PsionicRegenerationPowerComponent, PsionicRegenerationDoAfterEvent>(OnDoAfter);
     }
 
-    [ValidatePrototypeId<EntityPrototype>] private const string ActionPsionicRegeneration = "ActionPsionicRegeneration";
+    private readonly EntProtoId ActionPsionicRegeneration = "ActionPsionicRegeneration";
 
     private void OnInit(EntityUid uid, PsionicRegenerationPowerComponent component, ComponentInit args)
     {
@@ -80,11 +80,6 @@ public sealed class PsionicRegenerationPowerSystem : EntitySystem
         args.Handled = true;
     }
 
-    private void OnShutdown(EntityUid uid, PsionicRegenerationPowerComponent component, ComponentShutdown args)
-    {
-        _actions.RemoveAction(uid, component.PsionicRegenerationPowerAction);
-    }
-
     private void OnDispelled(EntityUid uid, PsionicRegenerationPowerComponent component, DispelledEvent args)
     {
         if (component.DoAfter == null)
@@ -95,6 +90,8 @@ public sealed class PsionicRegenerationPowerSystem : EntitySystem
 
         args.Handled = true;
     }
+
+    private static readonly ProtoId<ReagentPrototype> PsionicRegenerationEssence = "PsionicRegenerationEssence";
 
     private void OnDoAfter(EntityUid uid, PsionicRegenerationPowerComponent component, PsionicRegenerationDoAfterEvent args)
     {
@@ -110,7 +107,7 @@ public sealed class PsionicRegenerationPowerSystem : EntitySystem
         var percentageComplete = Math.Min(1f, (_gameTiming.CurTime - args.StartedAt).TotalSeconds / component.UseDelay);
 
         var solution = new Solution();
-        solution.AddReagent("PsionicRegenerationEssence", FixedPoint2.New(component.EssenceAmount * percentageComplete));
+        solution.AddReagent(PsionicRegenerationEssence, FixedPoint2.New(component.EssenceAmount * percentageComplete));
         _bloodstreamSystem.TryAddToBloodstream((uid, stream), solution);
     }
 }

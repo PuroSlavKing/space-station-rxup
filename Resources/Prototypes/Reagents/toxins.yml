@@ -351,8 +351,15 @@
       effects:
       - !type:ModifyStatusEffect
         effectProto: StatusEffectSeeingRainbow
-        type: Add
+        type: Update
         time: 10
+        # start-backmen: psionic
+      - !type:ChemRemovePsionic
+        conditions:
+        - !type:ReagentCondition
+          reagent: MindbreakerToxin
+          min: 20
+        # end-backmen: psionic
   # TODO: PROPER hallucinations
 
 - type: reagent
@@ -488,7 +495,7 @@
       - !type:PopupMessage
         conditions:
         - !type:MetabolizerTypeCondition
-          type: [ Animal, Vox ]
+          type: [ Animal, Vox, Bloodsucker ] # backmen
           inverted: true
         type: Local
         visualType: MediumCaution
@@ -498,12 +505,12 @@
         probability: 0.1
         conditions:
         - !type:MetabolizerTypeCondition
-          type: [ Animal, Vox, Plant ]
+          type: [ Animal, Vox, Plant, Bloodsucker ] # backmen
           inverted: true
       - !type:HealthChange
         conditions:
         - !type:MetabolizerTypeCondition
-          type: [ Animal, Vox, Plant ]
+          type: [ Animal, Vox, Plant, Bloodsucker ] # backmen
           inverted: true
         damage:
           types:
@@ -527,6 +534,12 @@
           type: [ Vox ]
         reagent: Protein
         amount: 0.25
+      - !type:AdjustReagent # backmen
+        conditions:
+        - !type:MetabolizerTypeCondition
+          type: [ Bloodsucker ]
+        reagent: Protein
+        amount: 1
 
 - type: reagent
   id: Allicin
@@ -550,6 +563,27 @@
         damage:
           types:
             Poison: 0.06
+      - !type:HealthChange # backmen
+        conditions:
+        - !type:ReagentCondition
+          reagent: Allicin
+          min: 1
+        - !type:MetabolizerTypeCondition
+          type: [Bloodsucker]
+        damage:
+          types:
+            Poison: 3
+      - !type:PopupMessage # backmen
+        type: Local
+        visualType: Large
+        messages: [ "generic-reagent-effect-burning-insides" ]
+        probability: 0.33
+        conditions:
+        - !type:ReagentCondition
+          reagent: Allicin
+          min: 1
+        - !type:MetabolizerTypeCondition
+          type: [Bloodsucker]
 
 - type: reagent
   id: Pax

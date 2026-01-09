@@ -22,12 +22,9 @@ public sealed class TdmTeamSystem : SharedTdmTeamSystem
         // do nothing on client
     }
 
-    [ValidatePrototypeId<FactionIconPrototype>]
-    private const string TeamA = "TeamAFaction";
-    [ValidatePrototypeId<FactionIconPrototype>]
-    private const string TeamB = "TeamBFaction";
-    [ValidatePrototypeId<FactionIconPrototype>]
-    private const string TeamNoTeam = "Team0Faction";
+    private static readonly ProtoId<FactionIconPrototype> TeamA = "TeamAFaction";
+    private static readonly ProtoId<FactionIconPrototype> TeamB = "TeamBFaction";
+    private static readonly ProtoId<FactionIconPrototype> TeamNoTeam = "Team0Faction";
 
     private void OnGetTeamIcon(Entity<TdmMemberComponent> ent, ref GetStatusIconsEvent args)
     {

@@ -56,11 +56,8 @@ public sealed class SacrificialAltarSystem : SharedSacrificialAltarSystem
 
     }
 
-    [ValidatePrototypeId<EntityTablePrototype>]
-    private const string DropTable = "AltarStandartTable";
-
-    [ValidatePrototypeId<EntityTablePrototype>]
-    private const string DropChapelTable = "AltarHolyTable";
+    private static readonly ProtoId<EntityTablePrototype> DropTable = "AltarStandartTable";
+    private static readonly ProtoId<EntityTablePrototype> DropChapelTable = "AltarHolyTable";
 
     private void OnDoAfter(EntityUid uid, SacrificialAltarComponent component, SacrificeDoAfterEvent args)
     {
