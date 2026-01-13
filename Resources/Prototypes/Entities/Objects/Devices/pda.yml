@@ -84,6 +84,8 @@
       - NotekeeperCartridge
       - NanoTaskCartridge
       - NewsReaderCartridge
+      - GlimmerMonitorCartridge # backmen: psionic
+      - BankCartridge # backmen
     cartridgeSlot:
       priority: -1
       name: device-pda-slot-component-slot-name-cartridge
@@ -155,6 +157,8 @@
     - NanoTaskCartridge
     - NewsReaderCartridge
     - WantedListCartridge
+    - GlimmerMonitorCartridge # backmen: psionic
+    - BankCartridge # backmen
 
 - type: entity
   parent: BasePDA
@@ -169,6 +173,8 @@
       - NanoTaskCartridge
       - NewsReaderCartridge
       - MedTekCartridge
+      - GlimmerMonitorCartridge # backmen: psionic
+      - BankCartridge # backmen
 
 - type: entity
   parent: BasePDA
@@ -409,6 +415,14 @@
       ejectSound: null
       insertSound: null
   - type: CartridgeLoader
+    uiKey: enum.PdaUiKey.Key
+    preinstalled:
+      - CrewManifestCartridge
+      - NotekeeperCartridge
+      - NanoTaskCartridge
+      - NewsReaderCartridge
+      - GlimmerMonitorCartridge # backmen: psionic
+      - BankCartridge # backmen
     cartridgeSlot:
       ejectSound: null
       insertSound: null
@@ -481,6 +495,8 @@
     - NanoTaskCartridge
     - NewsReaderCartridge
     - AstroNavCartridge
+    - GlimmerMonitorCartridge # backmen: psionic
+    - BankCartridge # backmen
 
 - type: entity
   parent: BasePDA
@@ -526,6 +542,8 @@
       - NanoTaskCartridge
       - NewsReaderCartridge
       - AstroNavCartridge
+      - GlimmerMonitorCartridge # backmen: psionic
+      - BankCartridge # backmen
 
 - type: entity
   parent: BasePDA
@@ -830,6 +848,15 @@
     accentVColor: "#8900c9"
   - type: Icon
     state: pda-rd
+  - type: CartridgeLoader
+    uiKey: enum.PdaUiKey.Key
+    preinstalled:
+      - CrewManifestCartridge
+      - NotekeeperCartridge
+      - NanoTaskCartridge
+      - NewsReaderCartridge
+      - GlimmerMonitorCartridge # backmen: psionic
+      - BankCartridge # backmen
 
 - type: entity
   parent: BasePDA
@@ -876,6 +903,8 @@
     - NewsReaderCartridge
     - WantedListCartridge
     - LogProbeCartridge
+    - GlimmerMonitorCartridge # backmen: psionic
+    - BankCartridge # backmen
 
 - type: entity
   parent: BaseSecurityPDA
@@ -948,6 +977,8 @@
       - WantedListCartridge
       - LogProbeCartridge
       - AstroNavCartridge
+      - GlimmerMonitorCartridge # backmen: psionic
+      - BankCartridge # backmen
 
 - type: entity
   parent: CentcomPDA
@@ -974,6 +1005,8 @@
       - WantedListCartridge
       - MedTekCartridge
       - AstroNavCartridge
+      - GlimmerMonitorCartridge # backmen: psionic
+      - BankCartridge # backmen
   - type: Tag #  Ignore Chameleon tags
     tags:
     - DoorBumpOpener
@@ -1092,6 +1125,8 @@
     preinstalled:
       - NotekeeperCartridge
       - NanoTaskCartridge
+      - GlimmerMonitorCartridge # backmen: psionic
+      - BankCartridge # backmen
 
 - type: entity
   parent: [ SyndiPDA, BaseSyndicateContraband ]
@@ -1130,6 +1165,8 @@
       - NotekeeperCartridge
       - NanoTaskCartridge
       - MedTekCartridge
+      - GlimmerMonitorCartridge # backmen: psionic
+      - BankCartridge # backmen
 
 - type: entity
   parent: [ SyndiOperativePDA, BaseSyndicateContraband ]
@@ -1178,6 +1215,8 @@
       - WantedListCartridge
       - LogProbeCartridge
       - AstroNavCartridge
+      - GlimmerMonitorCartridge # backmen: psionic
+      - BankCartridge # backmen
 
 - type: entity
   parent: ERTLeaderPDA
@@ -1347,6 +1386,8 @@
     - NewsReaderCartridge
     - WantedListCartridge
     - LogProbeCartridge
+    - GlimmerMonitorCartridge # backmen: psionic
+    - BankCartridge # backmen
 
 - type: entity
   parent: BaseMedicalPDA
@@ -1375,6 +1416,8 @@
     - NewsReaderCartridge
     - WantedListCartridge
     - MedTekCartridge
+    - GlimmerMonitorCartridge # backmen: psionic
+    - BankCartridge # backmen
 
 - type: entity
   parent: ClownPDA

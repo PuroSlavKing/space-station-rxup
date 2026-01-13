@@ -188,10 +188,13 @@
   - type: EmitSoundOnLand
     sound: *SoundRubberHammer
   - type: Storage
+    maxItemSize: Large
     storageOpenSound: &SoundHorn
       collection: BikeHorn
       params:
         variation: 0.125
+    grid:
+    - 0,0,8,6
     storageCloseSound: *SoundHorn
     storageInsertSound: &SoundSqueak
       collection: FootstepClown
